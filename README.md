@@ -1,2 +1,3 @@
 # PythonKeyLog
-A simple key logger script that logs all keystrokes and in 10 minute intervals will send the logs to a provided email. 
+A simple keylogger script that logs all keystrokes and stores the keystrokes into text files which is sent to a given email
+in every 10 minute intervals.
