@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed83e499-2b6b-4f06-8aa0-e492a32120f3" name="Default Changelist" comment="Added email functionality. Emails the log to a given email every 10 minutes.">
+    <list default="true" id="ed83e499-2b6b-4f06-8aa0-e492a32120f3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="18" lean-forward="true" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+            <state relative-caret-position="315">
+              <caret line="21" column="12" lean-forward="true" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
               <folding>
                 <element signature="e#0#48#0" expanded="true" />
               </folding>
@@ -171,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1578698082098</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added email functionality. Emails the log to a given email every 10 minutes.">
+      <created>1578717832820</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1578717832820</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -237,7 +243,8 @@
     <MESSAGE value="File is cleaned every 10 seconds." />
     <MESSAGE value="File is cleared every 10 minutes. Backspace now deletes the last pressed character in the textfile." />
     <MESSAGE value="git ignore added." />
-    <option name="LAST_COMMIT_MESSAGE" value="git ignore added." />
+    <MESSAGE value="Added email functionality. Emails the log to a given email every 10 minutes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added email functionality. Emails the log to a given email every 10 minutes." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/RecordLog.py">
@@ -311,8 +318,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="18" lean-forward="true" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        <state relative-caret-position="315">
+          <caret line="21" column="12" lean-forward="true" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
           <folding>
             <element signature="e#0#48#0" expanded="true" />
           </folding>

