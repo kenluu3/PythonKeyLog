@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed83e499-2b6b-4f06-8aa0-e492a32120f3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ed83e499-2b6b-4f06-8aa0-e492a32120f3" name="Default Changelist" comment="Fixed threading exceptions when main thread exited.">
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -17,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="120" column="36" lean-forward="true" selection-start-line="120" selection-start-column="36" selection-end-line="120" selection-end-column="36" />
+            <state relative-caret-position="1725">
+              <caret line="115" column="21" lean-forward="true" selection-start-line="115" selection-start-column="21" selection-end-line="115" selection-end-column="21" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -65,8 +64,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="76" />
-    <option name="y" value="82" />
+    <option name="x" value="91" />
+    <option name="y" value="119" />
     <option name="width" value="1764" />
     <option name="height" value="1073" />
   </component>
@@ -236,7 +235,14 @@
       <option name="project" value="LOCAL" />
       <updated>1578787535383</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Fixed threading exceptions when main thread exited.">
+      <created>1578867101043</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1578867101043</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView">
@@ -257,7 +263,7 @@
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32985386" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5002869" side_tool="true" weight="0.32985386" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="2" sideWeight="0.49971315" visible="true" weight="0.32985386" />
+      <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.49971315" weight="0.32985386" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.32985386" />
@@ -321,7 +327,8 @@
     <MESSAGE value="Removed special keys from being logged." />
     <MESSAGE value="Non-alpha numeric keys are logged. Esc-key no longer stops the script." />
     <MESSAGE value="Removed on_release function from listener." />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed on_release function from listener." />
+    <MESSAGE value="Fixed threading exceptions when main thread exited." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed threading exceptions when main thread exited." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/RecordLog.py" />
@@ -384,8 +391,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="120" column="36" lean-forward="true" selection-start-line="120" selection-start-column="36" selection-end-line="120" selection-end-column="36" />
+        <state relative-caret-position="1725">
+          <caret line="115" column="21" lean-forward="true" selection-start-line="115" selection-start-column="21" selection-end-line="115" selection-end-column="21" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>

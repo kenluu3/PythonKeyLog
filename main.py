@@ -128,7 +128,6 @@ def main():
 
         print('\nProgram terminated.\n')
 
-
 # Execute if it is the main module.
 if __name__ == "__main__":
 
