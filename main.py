@@ -42,7 +42,7 @@ def sendemail():
 
     while True:
 
-        time.sleep(10) # Pause for cycle time before sending email, will act as a clock.
+        time.sleep(CYCLE) # Pause for cycle time before sending email, will act as a clock.
 
         server = smtplib.SMTP('smtp.gmail.com', 587)  # Sets up a port connection.
 
